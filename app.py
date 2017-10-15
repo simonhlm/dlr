@@ -204,12 +204,9 @@ def login():
 if __name__ == "__main__":
     # predefine username & password for testing purpose
     records = readxls('dlr.xlsx')
-    """
+    
     username, password = login()
-    """
-    username = "huanglmw@cn.ibm.com"
-    password = "huang005"
-    #"""
+    
     for record in records:
         download_instance = DownloadReport(username, password, **record)
         download_instance.start()
