@@ -1,0 +1,7 @@
+﻿#ingore files
+__pycache__
+tktesting.py
+*.db
+*.csv
+*.log
+*.bak
