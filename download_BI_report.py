@@ -15,8 +15,8 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(filename)s[line:%(lineno)d]\
                      %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S', 
-                    filename='app.log',
-                    filemode='w'
+                    #filename='app.log',
+                    #filemode='w'
                     )
 
 FIELDS = ["report_level", "country_or_company", "start_date", "end_date", \
@@ -35,6 +35,9 @@ class DownloadReport(object):
     def __init__(self, username, password, **kw):
 
         self.options = webdriver.ChromeOptions()
+        #self.options.add_argument('headless')
+        #self.options.add_argument('isable-gpu')
+        #self.options.add_argument('window-size=1200x600')
         self.prefs = {'profile.default_content_settings.popups': 0, \
         'download.default_directory': os.getcwd()}
         self.options.add_experimental_option('prefs', self.prefs)
@@ -57,6 +60,7 @@ class DownloadReport(object):
 
     
     def start(self):
+        logging.info('process start the chrome')
         self.base_url = "https://"+self.username+":"+self.password+"@"+labor_report_url
         self.driver = webdriver.Chrome(chrome_options=self.options)
         self.driver.implicitly_wait(15)
@@ -64,8 +68,10 @@ class DownloadReport(object):
 
     def verify_windows_security(self):      
         # check for windows security 
+        logging.info('start to verify windows security')
         try:
             self.driver.get(self.base_url)
+            logging.info('pass the verify')
             driver = self.driver
             element = WebDriverWait(self.driver, 3).until(lambda driver: \
                 driver.find_element_by_link_text("SIM Various Labor Report"))
@@ -75,7 +81,7 @@ class DownloadReport(object):
 
         # click the labor report botton 
     def run_labor_report(self):
-        
+        logging.info('start to run labor report')
         self.driver.find_element_by_link_text("SIM Various Labor Report").click()
 
         #check for the logon 
@@ -248,7 +254,7 @@ def loadxls(xlsname):
 
 def login():
     username = input("Please input your username: ")
-    password = getpass("Please entry your password:")
+    password = getpass("Please entry your password: ")
 
     return username, password
 
@@ -263,7 +269,8 @@ if __name__ == "__main__":
     records = loadxls('dlr.xlsx')
     
     logging.info('Get the username and password')
-    username, password = login()
+    #username, password = login()
+    username, password = 'huanglmw@cn.ibm.com', 'huang010'
     
     logging.info('Start to process request')
     for record in records:
@@ -286,5 +293,5 @@ if __name__ == "__main__":
                 logging.info('Ooops! Error... retry to process the record')
                 print('Ooops! Error... retry to process the record')
                 download_instance.tearDown()
-                logging.error(e)
+                logging.error(str(e))
     show_end() 
