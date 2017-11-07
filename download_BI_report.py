@@ -259,7 +259,7 @@ def login():
     return username, password
 
 def show_end():
-    print('Down Load report have completed, press any key to exit')
+    print('\n'+'Down Load report have completed, press any key to exit...')
     if msvcrt.getch():
         pass
 
@@ -269,8 +269,8 @@ if __name__ == "__main__":
     records = loadxls('dlr.xlsx')
     
     logging.info('Get the username and password')
-    #username, password = login()
-    username, password = 'huanglmw@cn.ibm.com', 'huang010'
+    username, password = login()
+    #username, password = 'huanglmw@cn.ibm.com', 'huang010'
     
     logging.info('Start to process request')
     for record in records:
